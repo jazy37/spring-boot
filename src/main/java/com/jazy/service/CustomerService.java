@@ -2,6 +2,7 @@ package com.jazy.service;
 
 import com.jazy.customer.Customer;
 import com.jazy.customer.CustomerDao;
+import com.jazy.exception.CustomerNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,6 @@ public class CustomerService {
 
     public Customer getCustomerById(Integer id){
         return customerDao.findCustomerById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Customer [%s] not found".formatted(id)));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer [%s] not found".formatted(id)));
     }
 }
