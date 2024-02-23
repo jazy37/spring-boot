@@ -1,16 +1,14 @@
 package com.jazy.controller;
 
 import com.jazy.customer.Customer;
+import com.jazy.customer.CustomerRequest;
 import com.jazy.service.CustomerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -19,13 +17,27 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/customers")
+    @GetMapping()
     public List<Customer> getCustomers() {
         return customerService.getCustomerDao();
     }
 
-    @GetMapping("/customers/{id}")
+    @GetMapping("/{id}")
     public Customer getCustomer(@PathVariable(name = "id") Integer id){
         return customerService.getCustomerById(id);
+    }
+
+    @PostMapping()
+    public void registerCustomer(@RequestBody CustomerRequest customer) {
+        customerService.addCustomer(customer);
+    }
+    @DeleteMapping("/{id}")
+    public void deleteCustomer(@PathVariable(name = "id") Integer id) {
+        customerService.deleteCustomer(id);
+    }
+
+    @PutMapping("/{id}")
+    public void updateCustomer(@PathVariable(name = "id") Integer id, @RequestBody CustomerRequest customer) {
+        customerService.updateCustomer(id, customer);
     }
 }
