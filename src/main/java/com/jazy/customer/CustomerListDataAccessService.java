@@ -1,12 +1,10 @@
 package com.jazy.customer;
 
-import com.jazy.exception.CustomerNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Repository("list")
 public class CustomerListDataAccessService implements CustomerDao{
@@ -15,9 +13,9 @@ public class CustomerListDataAccessService implements CustomerDao{
 
     static {
         customers = new ArrayList<>();
-        Customer alex = new Customer(1, "Alex", "alex@mail.com", 21);
+        Customer alex = new Customer(1L, "Alex", "alex@mail.com", 21);
         customers.add(alex);
-        Customer jakub = new Customer(2, "Jakub", "jakub@mail.com", 22);
+        Customer jakub = new Customer(2L, "Jakub", "jakub@mail.com", 22);
         customers.add(jakub);
     }
     @Override
@@ -26,7 +24,7 @@ public class CustomerListDataAccessService implements CustomerDao{
     }
 
     @Override
-    public Optional<Customer> findCustomerById(int id) {
+    public Optional<Customer> findCustomerById(long id) {
         return customers.stream()
                 .filter(s -> s.getId().equals(id))
                 .findFirst();
@@ -43,7 +41,7 @@ public class CustomerListDataAccessService implements CustomerDao{
     }
 
     @Override
-    public void deleteCustomer(int id) {
+    public void deleteCustomer(long id) {
         customers.stream()
                 .filter(c -> c.getId().equals(id))
                 .findFirst()
@@ -51,7 +49,7 @@ public class CustomerListDataAccessService implements CustomerDao{
     }
 
     @Override
-    public boolean existsCustomerById(int id) {
+    public boolean existsCustomerById(long id) {
         return customers.stream().anyMatch(s -> s.getId().equals(id));
     }
 

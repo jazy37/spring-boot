@@ -1,5 +1,6 @@
 package com.jazy;
 
+import com.github.javafaker.Faker;
 import com.jazy.customer.Customer;
 import com.jazy.repository.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -9,6 +10,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 @SpringBootApplication
 
@@ -21,14 +24,14 @@ public class Main {
     }
     @Bean
     CommandLineRunner runner(CustomerRepository repository) {
+        Faker faker = new Faker(new Locale("pl"));
+        Random randomAge = new Random();
         return args -> {
+            String name = faker.name().firstName();
             List<Customer> customers = List.of(
-                    new Customer("Jakub", "jakub@mail.com", 22),
-                    new Customer("Alex", "alex@mail.com", 21),
-                    new Customer("Klaudia", "klaudia@mail.com", 24)
+                new Customer(name, "%s@example.com".formatted(name), randomAge.nextInt(10,99))
             );
             repository.saveAll(customers);
-            System.out.println("Added Test Data");
         };
     }
     @Bean

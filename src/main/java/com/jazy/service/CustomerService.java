@@ -14,7 +14,7 @@ import java.util.List;
 public class CustomerService {
     private final CustomerDao customerDao;
 
-    public CustomerService(@Qualifier("jpa") CustomerDao customerDao) {
+    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao) {
         this.customerDao = customerDao;
     }
 
@@ -22,7 +22,7 @@ public class CustomerService {
         return customerDao.selectAllCustomers();
     }
 
-    public Customer getCustomerById(Integer id){
+    public Customer getCustomerById(long id){
         return customerDao.findCustomerById(id)
                 .orElseThrow(() -> new CustomerNotFoundException("Customer id: %s not found".formatted(id)));
     }
@@ -41,20 +41,24 @@ public class CustomerService {
         customerDao.saveCustomer(customer);
     }
 
-    public void deleteCustomer(int id) {
+    public void deleteCustomer(long id) {
         if (!customerDao.existsCustomerById(id)) {
             throw new CustomerNotFoundException("Customer id: %s not found".formatted(id));
         }
         customerDao.deleteCustomer(id);
     }
 
-    public void updateCustomer(int id, CustomerRequest customerRequest) {
+    public void updateCustomer(long id, CustomerRequest customerRequest) {
         Customer customer = getCustomerById(id);
 
         if(customerRequest.age() != null)
             customer.setAge(customerRequest.age());
-        if(customerRequest.email() != null)
+        if(customerRequest.email() != null) {
+            if(!customerRequest.email().equals(customer.getEmail()) && customerDao.existsPersonWithEmail(customerRequest.email())) {
+                throw new CustomerDuplicateException("customer email %s already exists".formatted(customerRequest.email()));
+            }
             customer.setEmail(customerRequest.email());
+        }
         if(customerRequest.name() != null)
             customer.setName(customerRequest.name());
 
