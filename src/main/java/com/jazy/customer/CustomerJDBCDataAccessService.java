@@ -32,7 +32,6 @@ public class CustomerJDBCDataAccessService implements CustomerDao{
     public void saveCustomer(Customer customer) {
         var sql = "INSERT INTO customer(name, email, age) VALUES (?, ?, ?)";
         int results = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getAge());
-        System.out.println("jdbcTemplate.results = " + results);
     }
 
     @Override
