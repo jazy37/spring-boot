@@ -19,7 +19,7 @@ public class CustomerController {
 
     @GetMapping()
     public List<Customer> getCustomers() {
-        return customerService.getCustomerDao();
+        return customerService.getAllCustomer();
     }
 
     @GetMapping("/{id}")

@@ -18,7 +18,7 @@ public class CustomerService {
         this.customerDao = customerDao;
     }
 
-    public List<Customer> getCustomerDao() {
+    public List<Customer> getAllCustomer() {
         return customerDao.selectAllCustomers();
     }
 
