@@ -1,35 +1,33 @@
 services:
   db:
     container_name: postgres
-    image: postgres
+    image: postgres:15.1
     environment:
       POSTGRES_USER: jazy
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
     volumes:
-      - postgres:/data/postgres
+      - db:/data/postgres
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - db
     restart: unless-stopped
-
   jazy-api:
     container_name: jazy-api
     image: jazy377/spring-boot-example
     environment:
-      - SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/customer
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/customer
     ports:
       - "8088:8080"
     networks:
-      - postgres
+      - db
     depends_on:
       - db
     restart: unless-stopped
 networks:
-  postgres:
+  db:
     driver: bridge
 
 volumes:
-  postgres:
-  pgadmin:
+  db:
