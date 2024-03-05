@@ -33,6 +33,8 @@ public class Main {
             );
 //            repository.saveAll(customers);
         };
+
+
     }
     @Bean
     public Foo getFoo() {
