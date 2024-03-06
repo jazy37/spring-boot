@@ -9,17 +9,16 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.jazy</groupId>
-    <artifactId>spring-boot-example</artifactId>
+    <artifactId>jazy-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-example</name>
     <description>Demo project for Spring Boot</description>
-    <organization>
-        <name>jazy</name>
-        <url>https://jazy.com</url>
-    </organization>
+
     <properties>
         <java.version>17</java.version>
         <docker.username>jazy377</docker.username>
+        <docker.image.name>jazy-api</docker.image.name>
+        <docker.image.tag/>
     </properties>
     <dependencies>
         <dependency>
@@ -159,7 +158,7 @@
                         </platforms>
                     </from>
                     <to>
-                        <image>docker.io/${docker.username}/${project.artifactId}:${project.version}</image>
+                        <image>docker.io/${docker.username}/${docker.image.name}:${docker.image.tag}</image>
                         <tags>
                             <tag>latest</tag>
                         </tags>

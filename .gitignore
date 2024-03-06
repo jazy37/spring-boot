@@ -1,6 +1,5 @@
 **/target
 **/.idea
 **/node_modules
-**/Dockerrun.aws.json
 **/*.iml
 
