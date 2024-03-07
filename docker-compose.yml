@@ -1,7 +1,7 @@
 services:
   db:
     container_name: postgres
-    image: postgres:16.1
+    image: postgres:15.2
     environment:
       POSTGRES_USER: jazy
       POSTGRES_PASSWORD: password
@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
   jazy-api:
     container_name: jazy-api
-    image: jazy377/spring-boot-example
+    image: jazy377/jazy-api
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/customer
     ports:
