@@ -29,8 +29,9 @@ jobs:
         working-directory: ./backend
     steps:
       - name: Starting Deployment Notification
-        run: >
-          cd $GITHUB_WORKSPACE/backend &&
+        run: |
+          ls -la $GITHUB_WORKSPACE/backend
+          cd $GITHUB_WORKSPACE/backend && 
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Deploy Started"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
