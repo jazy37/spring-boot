@@ -28,7 +28,8 @@ jobs:
       run:
         working-directory: ./backend
     steps:
-      - name: Starting Deploy Notification
+      - name: Starting Deployment Notification
+        working-directory: ./backend
         run: >
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Deploy Started"}' 
