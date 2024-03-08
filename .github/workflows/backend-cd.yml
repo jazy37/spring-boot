@@ -30,7 +30,8 @@ jobs:
     steps:
       - name: Starting Deployment Notification
         run: |
-          ls -la $GITHUB_WORKSPACE/backend
+          echo "Current working directory: $GITHUB_WORKSPACE"
+          ls -la $GITHUB_WORKSPACE
           cd $GITHUB_WORKSPACE/backend && 
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Deploy Started"}' 
