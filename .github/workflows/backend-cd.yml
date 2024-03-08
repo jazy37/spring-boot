@@ -30,7 +30,8 @@ jobs:
     steps:
       - name: Starting Deployment Notification
         run: >
-          curl && curl -X POST -H 'Content-type: application/json' 
+          cd $GITHUB_WORKSPACE/backend &&
+          curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Deploy Started"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - uses: actions/checkout@v4
