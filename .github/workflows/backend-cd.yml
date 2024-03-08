@@ -41,7 +41,7 @@ jobs:
           cache: 'maven'
       - name: Docker Hub Notification
         run: >
-          curl && curl -X POST -H 'Content-type: application/json' 
+          curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Clone repo and setup java completed successfully"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Login to Docker Hub
@@ -56,7 +56,7 @@ jobs:
         run: mvn -ntp -B verify -Ddocker.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}} jib:build
       - name: Deploy version Notification
         run: >
-          curl && curl -X POST -H 'Content-type: application/json' 
+          curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"deploy version - ${{steps.build-number.outputs.BUILD_NUMBER}} :cubimal_chick:"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Update Dockerrun.aws.json api image tag with new build number
@@ -79,7 +79,7 @@ jobs:
           deployment_package: backend/Dockerrun.aws.json
       - name: Deploy to EB completed
         run: >
-          curl && curl -X POST -H 'Content-type: application/json' 
+          curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Deploy to EB completed successfully"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Commit and Push Dockerrun.aws.json
@@ -91,14 +91,14 @@ jobs:
           git push
       - name: Send Slack Notification
         run: >
-          curl && curl -X POST -H 'Content-type: application/json' 
+          curl -X POST -H 'Content-type: application/json' 
           --data 
           '{"text":"Deploy completed successfully :white_check_mark:"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Send Slack Notification
         if: always()
         run: >
-          curl && curl -X POST -H 'Content-type: application/json' 
+          curl -X POST -H 'Content-type: application/json' 
           --data 
           '{"text":"Job Status $${{ job.status }}"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
