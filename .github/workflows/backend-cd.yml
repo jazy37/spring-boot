@@ -28,15 +28,12 @@ jobs:
       run:
         working-directory: ./backend
     steps:
+      - uses: actions/checkout@v4
       - name: Starting Deployment Notification
-        run: |
-          echo "Current working directory: $GITHUB_WORKSPACE"
-          ls -la $GITHUB_WORKSPACE
-          cd $GITHUB_WORKSPACE/backend && 
+        run: >
           curl -X POST -H 'Content-type: application/json' 
           --data '{"text":"Deploy Started"}' 
           ${{ secrets.SLACK_WEBHOOK_URL }}
-      - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
