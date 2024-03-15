@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "jazy-api",
-      "image": "jazy377/jazy-api:08.03.2024.14.50.17",
+      "image": "jazy377/jazy-api:15.03.2024.14.04.04",
       "essential": true,
       "memory": 512,
       "portMappings": [
