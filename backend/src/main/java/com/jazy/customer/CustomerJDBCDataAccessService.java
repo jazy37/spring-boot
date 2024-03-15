@@ -19,19 +19,19 @@ public class CustomerJDBCDataAccessService implements CustomerDao{
 
     @Override
     public List<Customer> selectAllCustomers() {
-        var sql = "SELECT id, name, email, age FROM customer";
+        var sql = "SELECT id, name, email, age, gender FROM customer";
         return jdbcTemplate.query(sql, customerRowMapper);
     }
     @Override
     public Optional<Customer> findCustomerById(long id) {
-        var sql = "SELECT id, name, email, age FROM customer WHERE id = ?";
+        var sql = "SELECT id, name, email, age, gender FROM customer WHERE id = ?";
         return jdbcTemplate.query(sql, customerRowMapper, id).stream().findFirst();
     }
 
     @Override
     public void saveCustomer(Customer customer) {
-        var sql = "INSERT INTO customer(name, email, age) VALUES (?, ?, ?)";
-        int results = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getAge());
+        var sql = "INSERT INTO customer(name, email, age, gender) VALUES (?, ?, ?, ?)";
+        int results = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getAge(), customer.getGender());
     }
 
     @Override

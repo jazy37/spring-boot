@@ -47,7 +47,8 @@ class CustomerServiceTest {
         Customer customer = new Customer(
                 "Jakub",
                 "jakub@email.com",
-                21
+                21,
+                "Male"
         );
         when(customerDao.findCustomerById(id))
                 .thenReturn(Optional.of(customer));
@@ -82,7 +83,8 @@ class CustomerServiceTest {
         CustomerRequest request = new CustomerRequest(
                 "Jakub",
                 email,
-                21
+                21,
+                "Male"
         );
 
         //When
@@ -112,7 +114,8 @@ class CustomerServiceTest {
         CustomerRequest request = new CustomerRequest(
                 "Jakub",
                 email,
-                21
+                21,
+                "Male"
         );
 
         //When
@@ -159,13 +162,13 @@ class CustomerServiceTest {
         //Given
         long id = 10;
         Customer customer = new Customer(
-                id, "foo", "testowy@gmail.com", 21
+                id, "foo", "testowy@gmail.com", 21, "Male"
         );
 
         when(customerDao.findCustomerById(id)).thenReturn(Optional.of(customer));
 
         CustomerRequest request = new CustomerRequest(
-                "Jakub", "jakub@gmail.com", 25
+                "Jakub", "jakub@gmail.com", 25, "Male"
         );
 
         when(customerDao.existsPersonWithEmail("jakub@gmail.com")).thenReturn(false);
@@ -196,11 +199,12 @@ class CustomerServiceTest {
                 id,
                 "Jakub",
                 email,
-                21
+                21,
+                "Male"
         );
         when(customerDao.findCustomerById(id)).thenReturn(Optional.of(customer));
 
-        CustomerRequest alex = new CustomerRequest("Alex", null, null);
+        CustomerRequest alex = new CustomerRequest("Alex", null, null, null);
 
         //When
         underTest.updateCustomer(id, alex);
@@ -223,12 +227,12 @@ class CustomerServiceTest {
         //Given
         long id = 1L;
         Customer customer = new Customer(
-                id, "foo", "foo@gmail.com", 21
+                id, "foo", "foo@gmail.com", 21, "Male"
         );
 
         when(customerDao.findCustomerById(id)).thenReturn(Optional.of(customer));
 
-        CustomerRequest request = new CustomerRequest("Jakub", "jakub@email.com", null);
+        CustomerRequest request = new CustomerRequest("Jakub", "jakub@email.com", null, null);
 
         when(customerDao.existsPersonWithEmail("jakub@email.com")).thenReturn(false);
 
@@ -252,7 +256,7 @@ class CustomerServiceTest {
     void willThrowExceptionWhenUpdateCustomerNotFound() {
         //Given
         long id = 10L;
-        CustomerRequest request = new CustomerRequest("Jakub", "jakub@email.com", null);
+        CustomerRequest request = new CustomerRequest("Jakub", "jakub@email.com", null, null);
 
         //When
         when(customerDao.findCustomerById(id)).thenReturn(Optional.empty());
@@ -274,14 +278,16 @@ class CustomerServiceTest {
                 id,
                 "jakub",
                 email,
-                21
+                21,
+                "Male"
         );
         when(customerDao.findCustomerById(id)).thenReturn(Optional.of(customer));
 
         CustomerRequest request = new CustomerRequest(
                 "Jakub",
                 "foo-test@email.com",
-                21
+                21,
+                "Male"
         );
 
 

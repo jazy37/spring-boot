@@ -63,4 +63,5 @@ public abstract class AbstractTestcontainers {
     }
 
     protected static final Faker FAKER = new Faker();
+    protected static final String[] genders = {"Male", "Female", "Other"};
 }

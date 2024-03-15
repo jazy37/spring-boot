@@ -14,7 +14,7 @@ import java.util.List;
 public class CustomerService {
     private final CustomerDao customerDao;
 
-    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao) {
+    public CustomerService(@Qualifier("jpa") CustomerDao customerDao) {
         this.customerDao = customerDao;
     }
 
@@ -32,12 +32,14 @@ public class CustomerService {
         if(customerDao.existsPersonWithEmail(email)) {
             throw new CustomerDuplicateException("Customer with email %s already exists".formatted(email));
         }
-
+        System.out.println(customerRegistrationRequest.gender() + " from service");
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
-                customerRegistrationRequest.age()
+                customerRegistrationRequest.age(),
+                customerRegistrationRequest.gender()
         );
+        System.out.println(customer);
         customerDao.saveCustomer(customer);
     }
 

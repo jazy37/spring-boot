@@ -29,7 +29,7 @@ public class Main {
         return args -> {
             String name = faker.name().firstName();
             List<Customer> customers = List.of(
-                new Customer(name, "%s@example.com".formatted(name), randomAge.nextInt(10,99))
+                new Customer(name, "%s@example.com".formatted(name), randomAge.nextInt(10,99), "Male")
             );
 //            repository.saveAll(customers);
         };

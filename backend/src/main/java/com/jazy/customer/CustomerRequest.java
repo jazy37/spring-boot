@@ -1,3 +1,3 @@
 package com.jazy.customer;
 
-public record CustomerRequest(String name, String email, Integer age) {}
+public record CustomerRequest(String name, String email, Integer age, String gender) {}

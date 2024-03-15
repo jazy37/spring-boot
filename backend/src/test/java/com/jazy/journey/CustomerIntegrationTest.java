@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import javax.print.attribute.standard.Media;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -38,9 +37,10 @@ public class CustomerIntegrationTest {
         Name fakerName = faker.name();
         String name = fakerName.firstName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@email.com";
+        String gender = "Male";
         int age = RANDOM.nextInt(10, 80);
         CustomerRequest request =
-                new CustomerRequest(name, email, age);
+                new CustomerRequest(name, email, age, gender);
 
         //send post request
         webClient.post().uri(CUSTOMER_URI)
@@ -65,7 +65,7 @@ public class CustomerIntegrationTest {
 
         //make sure that customer created
         Customer expectedCustomer = new Customer(
-                name, email, age
+                name, email, age, gender
         );
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
@@ -99,9 +99,10 @@ public class CustomerIntegrationTest {
         Name fakerName = faker.name();
         String name = fakerName.firstName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@email.com";
+        String gender = "Male";
         int age = RANDOM.nextInt(10, 80);
         CustomerRequest request =
-                new CustomerRequest(name, email, age);
+                new CustomerRequest(name, email, age, gender);
 
         //send post request
         webClient.post().uri(CUSTOMER_URI)
@@ -158,9 +159,10 @@ public class CustomerIntegrationTest {
         Name fakerName = faker.name();
         String name = fakerName.firstName();
         String email = fakerName.lastName() + "-" + UUID.randomUUID() + "@email.com";
+        String gender = "Male";
         int age = RANDOM.nextInt(10, 80);
         CustomerRequest request =
-                new CustomerRequest(name, email, age);
+                new CustomerRequest(name, email, age, gender);
 
         //send post request
         webClient.post().uri(CUSTOMER_URI)
@@ -195,7 +197,7 @@ public class CustomerIntegrationTest {
 
         String newName = "newName";
         CustomerRequest requestToUpdate =
-                new CustomerRequest(newName, null, null);
+                new CustomerRequest(newName, null, null, null);
 
 
         webClient.put()
@@ -219,7 +221,7 @@ public class CustomerIntegrationTest {
                 .getResponseBody();
 
         Customer expected = new Customer(
-                id, newName, email, age
+                id, newName, email, age, gender
         );
         assert updated != null;
         assertThat(expected).isEqualTo(updated);
