@@ -51,7 +51,7 @@ function App() {
                 <Wrap jusify={"center"} spacing={"30px"}>
                 {customers.map((customer, index) => (
                      (<WrapItem key={index}>
-                        <CardWithImage key={index} {...customer} />
+                        <CardWithImage key={index} {...customer} imageNumber={index} />
                     </WrapItem>)
                 ))}
                 </Wrap>

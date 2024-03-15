@@ -3,6 +3,7 @@ package com.jazy.service;
 import com.jazy.customer.Customer;
 import com.jazy.customer.CustomerDao;
 import com.jazy.customer.CustomerRequest;
+import com.jazy.customer.Gender;
 import com.jazy.exception.CustomerDuplicateException;
 import com.jazy.exception.CustomerNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +49,7 @@ class CustomerServiceTest {
                 "Jakub",
                 "jakub@email.com",
                 21,
-                "Male"
+                Gender.MALE
         );
         when(customerDao.findCustomerById(id))
                 .thenReturn(Optional.of(customer));
@@ -84,7 +85,7 @@ class CustomerServiceTest {
                 "Jakub",
                 email,
                 21,
-                "Male"
+                Gender.MALE
         );
 
         //When
@@ -115,7 +116,7 @@ class CustomerServiceTest {
                 "Jakub",
                 email,
                 21,
-                "Male"
+                Gender.MALE
         );
 
         //When
@@ -162,13 +163,13 @@ class CustomerServiceTest {
         //Given
         long id = 10;
         Customer customer = new Customer(
-                id, "foo", "testowy@gmail.com", 21, "Male"
+                id, "foo", "testowy@gmail.com", 21, Gender.MALE
         );
 
         when(customerDao.findCustomerById(id)).thenReturn(Optional.of(customer));
 
         CustomerRequest request = new CustomerRequest(
-                "Jakub", "jakub@gmail.com", 25, "Male"
+                "Jakub", "jakub@gmail.com", 25, Gender.MALE
         );
 
         when(customerDao.existsPersonWithEmail("jakub@gmail.com")).thenReturn(false);
@@ -200,7 +201,7 @@ class CustomerServiceTest {
                 "Jakub",
                 email,
                 21,
-                "Male"
+                Gender.MALE
         );
         when(customerDao.findCustomerById(id)).thenReturn(Optional.of(customer));
 
@@ -227,7 +228,7 @@ class CustomerServiceTest {
         //Given
         long id = 1L;
         Customer customer = new Customer(
-                id, "foo", "foo@gmail.com", 21, "Male"
+                id, "foo", "foo@gmail.com", 21, Gender.MALE
         );
 
         when(customerDao.findCustomerById(id)).thenReturn(Optional.of(customer));
@@ -279,7 +280,7 @@ class CustomerServiceTest {
                 "jakub",
                 email,
                 21,
-                "Male"
+                Gender.MALE
         );
         when(customerDao.findCustomerById(id)).thenReturn(Optional.of(customer));
 
@@ -287,7 +288,7 @@ class CustomerServiceTest {
                 "Jakub",
                 "foo-test@email.com",
                 21,
-                "Male"
+                Gender.MALE
         );
 
 

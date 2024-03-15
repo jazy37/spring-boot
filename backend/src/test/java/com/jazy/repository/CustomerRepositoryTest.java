@@ -2,6 +2,7 @@ package com.jazy.repository;
 
 import com.jazy.AbstractTestcontainers;
 import com.jazy.customer.Customer;
+import com.jazy.customer.Gender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
         underTest.save(customer);
 
@@ -56,7 +57,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
         underTest.save(customer);
 

@@ -31,11 +31,12 @@ public class Customer {
     @Column(nullable = false)
     private Integer age;
     @Column(nullable = false)
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     public Customer() {}
 
-    public Customer(Long id, String name, String email, Integer age, String gender) {
+    public Customer(Long id, String name, String email, Integer age, Gender gender) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -43,7 +44,7 @@ public class Customer {
         this.gender = gender;
     }
 
-    public Customer(String name, String email, Integer age, String gender) {
+    public Customer(String name, String email, Integer age, Gender gender) {
         this.name = name;
         this.email = email;
         this.age = age;
@@ -82,11 +83,11 @@ public class Customer {
         this.age = age;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -95,7 +96,7 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age);
+        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age) && gender == customer.gender;
     }
 
     @Override
@@ -110,7 +111,7 @@ public class Customer {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
-                ", gender='" + gender + '\'' +
+                ", gender=" + gender +
                 '}';
     }
 }

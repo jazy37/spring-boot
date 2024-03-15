@@ -31,7 +31,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
         underTest.saveCustomer(customer);
         //WHEN
@@ -48,7 +48,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 email,
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
         underTest.saveCustomer(customer);
 
@@ -89,7 +89,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
 
         //When
@@ -111,7 +111,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
 
         underTest.saveCustomer(customer);
@@ -142,7 +142,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
 
         underTest.saveCustomer(customer);
@@ -167,7 +167,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
 
         underTest.saveCustomer(customer);
@@ -195,7 +195,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 email,
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
 
         underTest.saveCustomer(customer);
@@ -227,7 +227,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainers {
                 FAKER.name().fullName(),
                 email,
                 20,
-                FAKER.options().option(genders)
+                Gender.MALE
         );
 
         underTest.saveCustomer(customer);

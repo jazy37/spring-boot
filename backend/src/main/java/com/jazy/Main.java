@@ -2,6 +2,7 @@ package com.jazy;
 
 import com.github.javafaker.Faker;
 import com.jazy.customer.Customer;
+import com.jazy.customer.Gender;
 import com.jazy.repository.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,7 +30,7 @@ public class Main {
         return args -> {
             String name = faker.name().firstName();
             List<Customer> customers = List.of(
-                new Customer(name, "%s@example.com".formatted(name), randomAge.nextInt(10,99), "Male")
+                new Customer(name, "%s@example.com".formatted(name), randomAge.nextInt(10,99), Gender.MALE)
             );
 //            repository.saveAll(customers);
         };

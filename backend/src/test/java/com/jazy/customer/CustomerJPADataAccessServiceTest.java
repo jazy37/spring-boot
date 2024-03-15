@@ -58,7 +58,7 @@ class CustomerJPADataAccessServiceTest {
                 "Jakub",
                 "jakub@email.com",
                 21,
-                "Male"
+                Gender.MALE
         );
 
         //When
@@ -112,7 +112,7 @@ class CustomerJPADataAccessServiceTest {
                 "Jakub",
                 "jakub@email.com",
                 21,
-                "Male"
+                Gender.MALE
         );
 
         //When

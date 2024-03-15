@@ -24,13 +24,13 @@ class CustomerRowMapperTest {
         when(mock.getString("name")).thenReturn("foo");
         when(mock.getString("email")).thenReturn("foo@email.com");
         when(mock.getInt("age")).thenReturn(19);
-        when(mock.getString("gender")).thenReturn("Male");
+        when(mock.getString("gender")).thenReturn(String.valueOf(Gender.MALE));
 
         //When
         Customer actual = rowMapper.mapRow(mock, 1);
 
         //Then
-        Customer expected = new Customer(1L,"foo","foo@email.com",19,"Male");
+        Customer expected = new Customer(1L,"foo","foo@email.com",19,Gender.MALE);
         assertThat(actual).isEqualTo(expected);
     }
 }
