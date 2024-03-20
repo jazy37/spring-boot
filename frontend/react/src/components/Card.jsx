@@ -11,8 +11,10 @@ import {
     Stack,
     useColorModeValue, Tag,
 } from '@chakra-ui/react'
+import DeleteCustomerAlert from "./Alerts/DeleteCustomerAlert.jsx";
+import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
 
-export default function CardWithImage({id, name, email, age, gender, imageNumber}) {
+export default function CardWithImage({id, name, email, age, gender, imageNumber, fetchCustomers}) {
     gender = gender === "MALE" ? "men" : "women";
     return (
         <Center py={6}>
@@ -45,8 +47,8 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                     />
                 </Flex>
 
-                <Box p={6}>
-                    <Stack spacing={0} align={'center'} mb={5}>
+                <Box p={5}>
+                    <Stack spacing={0} align={'center'} my={2}>
                         <Tag variant='solid' colorScheme='blue' borderRadius='full'>
                             {id}
                         </Tag>
@@ -55,6 +57,10 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                         </Heading>
                         <Text color={'gray.500'}>{email}</Text>
                         <Text color={'gray.500'}>Age {age}</Text>
+                        <Flex>
+                            <DeleteCustomerAlert  id={id} fetchCustomers={fetchCustomers}/>
+                            <UpdateCustomerDrawer id={id} fetchCustomers={fetchCustomers} initialValues={{name,email,age}}/>
+                        </Flex>
                     </Stack>
                 </Box>
             </Box>
