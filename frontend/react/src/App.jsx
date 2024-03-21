@@ -1,5 +1,5 @@
 import SidebarWithHeader from "./components/shared/SideBar.jsx";
-import {Spinner, Text, Card, Wrap, WrapItem} from "@chakra-ui/react";
+import {Spinner, Text, Card, Wrap, WrapItem, Center} from "@chakra-ui/react";
 import {useEffect, useState} from "react";
 import {getCustomers, deleteCustomer} from "./services/client.js";
 import CardWithImage from "./components/Card.jsx";
@@ -64,13 +64,15 @@ function App() {
         <div>
             <SidebarWithHeader>
                 <DrawerForm fetchCustomers={fetchCustomers}/>
-                <Wrap jusify={"center"} spacing={"30px"}>
-                {customers.map((customer, index) => (
-                     (<WrapItem key={index}>
-                        <CardWithImage key={index} {...customer} imageNumber={index} fetchCustomers={fetchCustomers}/>
-                    </WrapItem>)
-                ))}
-                </Wrap>
+                <Center>
+                    <Wrap jusify={"center"} spacing={"20px"}>
+                    {customers.map((customer, index) => (
+                         (<WrapItem key={index}>
+                            <CardWithImage key={index} {...customer} imageNumber={index} fetchCustomers={fetchCustomers}/>
+                        </WrapItem>)
+                    ))}
+                    </Wrap>
+                </Center>
             </SidebarWithHeader>
         </div>
     )

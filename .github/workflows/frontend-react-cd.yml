@@ -1,0 +1,72 @@
+name: CD - Deploy FrontEnd
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - frontend/react/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      working-directory: ./frontend/react
+    steps:
+      - uses: actions/checkout@v4
+#        Lgoin to docker TODO add slack notification
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#          Set Build Number TODO add slack notification
+      - name: Set Build number
+        id: build-number
+        run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
+#        Build Docker Image and push to docker hub TODO add Slack Notification
+      - name: Docker Build and push
+        run: |
+          chmod +x ../../.ci/build-publish.sh
+          USERNAME=jazy377 \
+          REPO=jazy-react \
+          TAG=${{ steps.build-number.outputs.BUILD_NUMBER }} \
+          ../../.ci/build-publish.sh . \
+          --build-arg api_base_url=http://jazy-test-api.eu-central-1.elasticbeanstalk.com:8080
+#          Update Dockerrun.aws.json build version TODO add Slack Notification
+      - name: Update Dockerrun.aws.json frontend image tag with new build number
+        run: |
+          echo "Dockerrun.aws.json before updating tag"
+          cat ../Dockerrun.aws.json
+          sed -i -E 's_(jazy377/jazy-api:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' ../Dockerrun.aws.json
+          echo "Dockerrun.aws.json after updating tag"
+          cat ../Dockerrun.aws.json
+#          Deploy to EB TODO add Slack Notification
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ secrets.EB_APPLICATION_NAME }}
+          environment_name: ${{ secrets.EB_ENVIRONMENT_NAME }}
+          version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
+          version_description: ${{ github.SHA }}
+          region: ${{ secrets.EB_REGION }}
+          deployment_package: Dockerrun.aws.json
+      - name: Deploy to EB completed
+#        Commit and Push Dockerrun.aws.json to repo TODO add Slack Notification
+      - name: Commit and Push Dockerrun.aws.json
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add ../Dockerrun.aws.json
+          git commit -m "Update Dockerrun.aws.json docker image with new tag ${{steps.build-number.outputs.BUILD_NUMBER}}"
+          git push
+      - name: Send Slack Notification
+        if: always()
+        run: >
+          curl -X POST -H 'Content-type: application/json' 
+          --data 
+          '{"text":"Frontend Job Status ${{ job.status }}"}' 
+          ${{ secrets.SLACK_WEBHOOK_URL }}

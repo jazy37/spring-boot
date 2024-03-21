@@ -19,7 +19,7 @@ import {
     MenuDivider,
     MenuItem,
     MenuList,
-    Image
+    Image, Center
 } from '@chakra-ui/react'
 import {
     FiHome,
@@ -203,7 +203,7 @@ const SidebarWithHeader = ({children}) => {
             </Drawer>
             {/* mobilenav */}
             <MobileNav onOpen={onOpen} />
-            <Box ml={{ base: 0, md: 60 }} p="4">
+            <Box ml={{ base: 0, md: 60 }} p={4} >
                 { children }
             </Box>
         </Box>
