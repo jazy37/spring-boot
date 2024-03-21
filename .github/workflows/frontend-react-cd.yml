@@ -12,7 +12,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     defaults:
-      working-directory: ./frontend/react
+      run:
+        working-directory: ./frontend/react
     steps:
       - uses: actions/checkout@v4
 #        Login to docker TODO add slack notification
