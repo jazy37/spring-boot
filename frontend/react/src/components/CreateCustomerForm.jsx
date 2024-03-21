@@ -13,7 +13,7 @@ const MySelect = ({ label, ...props }) => {
             <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
             <Select {...field} {...props} />
             {meta.touched && meta.error ? (
-                <Alert className="error" className="error" status={"error"} mt={2} variant={"left-accent"}>
+                <Alert className="error" status={"error"} mt={2} variant={"left-accent"}>
                     <AlertIcon />
                     {meta.error}
                 </Alert>
