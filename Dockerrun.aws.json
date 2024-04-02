@@ -15,7 +15,7 @@
     },
     {
       "name": "jazy-api",
-      "image": "jazy377/jazy-api:latest",
+      "image": "jazy377/jazy-api:02.04.2024.18.08.30",
       "essential": true,
       "memory": 512,
       "portMappings": [
