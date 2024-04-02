@@ -23,6 +23,7 @@ class CustomerRowMapperTest {
         when(mock.getLong("id")).thenReturn(1L);
         when(mock.getString("name")).thenReturn("foo");
         when(mock.getString("email")).thenReturn("foo@email.com");
+        when(mock.getString("password")).thenReturn("superSecurePassword");
         when(mock.getInt("age")).thenReturn(19);
         when(mock.getString("gender")).thenReturn(String.valueOf(Gender.MALE));
 
@@ -30,7 +31,7 @@ class CustomerRowMapperTest {
         Customer actual = rowMapper.mapRow(mock, 1);
 
         //Then
-        Customer expected = new Customer(1L,"foo","foo@email.com",19,Gender.MALE);
+        Customer expected = new Customer(1L,"foo","foo@email.com", "superSecurePassword", 19, Gender.MALE);
         assertThat(actual).isEqualTo(expected);
     }
 }

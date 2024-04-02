@@ -26,6 +26,7 @@ services:
       - db
     restart: unless-stopped
   jazy-react:
+    platform: linux/amd64
     container_name: jazy-react
     image: jazy377/jazy-react
     build:

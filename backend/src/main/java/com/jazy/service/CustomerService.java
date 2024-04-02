@@ -3,27 +3,43 @@ package com.jazy.service;
 import com.jazy.customer.Customer;
 import com.jazy.customer.CustomerDao;
 import com.jazy.customer.CustomerRequest;
+import com.jazy.dto.CustomerDTOMapper;
+import com.jazy.dto.CustomerDto;
 import com.jazy.exception.CustomerDuplicateException;
 import com.jazy.exception.CustomerNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
+
     private final CustomerDao customerDao;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomerDTOMapper customerDTOMapper;
 
-    public CustomerService(@Qualifier("jpa") CustomerDao customerDao) {
+    public CustomerService(@Qualifier("jpa") CustomerDao customerDao,
+                           PasswordEncoder passwordEncoder,
+                           CustomerDTOMapper customerDTOMapper) {
         this.customerDao = customerDao;
+        this.passwordEncoder = passwordEncoder;
+        this.customerDTOMapper = customerDTOMapper;
     }
 
-    public List<Customer> getAllCustomer() {
-        return customerDao.selectAllCustomers();
+    public List<CustomerDto> getAllCustomer() {
+        return customerDao.selectAllCustomers()
+                .stream()
+                .map(customerDTOMapper)
+                .collect(Collectors.toList());
     }
 
-    public Customer getCustomerById(long id){
+    public CustomerDto getCustomerById(long id){
         return customerDao.findCustomerById(id)
+                .map(customerDTOMapper)
                 .orElseThrow(() -> new CustomerNotFoundException("Customer id: %s not found".formatted(id)));
     }
 
@@ -32,14 +48,13 @@ public class CustomerService {
         if(customerDao.existsPersonWithEmail(email)) {
             throw new CustomerDuplicateException("Customer with email %s already exists".formatted(email));
         }
-        System.out.println(customerRegistrationRequest.gender() + " from service");
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
+                passwordEncoder.encode(customerRegistrationRequest.password()),
                 customerRegistrationRequest.age(),
                 customerRegistrationRequest.gender()
         );
-        System.out.println(customer);
         customerDao.saveCustomer(customer);
     }
 
@@ -51,7 +66,8 @@ public class CustomerService {
     }
 
     public void updateCustomer(long id, CustomerRequest customerRequest) {
-        Customer customer = getCustomerById(id);
+        Customer customer = customerDao.findCustomerById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer id: %s not found".formatted(id)));
 
         if(customerRequest.age() != null)
             customer.setAge(customerRequest.age());

@@ -40,7 +40,7 @@ jobs:
         run: |
           echo "Dockerrun.aws.json before updating tag"
           cat ../../Dockerrun.aws.json
-          sed -i -E 's_(jazy377/jazy-api:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' ../../Dockerrun.aws.json
+          sed -i -E 's_(jazy377/jazy-react:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' ../../Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating tag"
           cat ../../Dockerrun.aws.json
 #          Deploy to EB TODO add Slack Notification
@@ -55,6 +55,7 @@ jobs:
           version_description: ${{ github.SHA }}
           region: ${{ secrets.EB_REGION }}
           deployment_package: Dockerrun.aws.json
+          wait_for_environment_recovery: 60
 #        Commit and Push Dockerrun.aws.json to repo TODO add Slack Notification
       - name: Commit and Push Dockerrun.aws.json
         run: |

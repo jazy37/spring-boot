@@ -1,6 +1,7 @@
 package com.jazy.repository;
 
 import com.jazy.AbstractTestcontainers;
+import com.jazy.TestConfig;
 import com.jazy.customer.Customer;
 import com.jazy.customer.Gender;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -16,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import({TestConfig.class})
 class CustomerRepositoryTest extends AbstractTestcontainers {
 
     @Autowired
@@ -32,7 +35,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
-                20,
+                "password", 20,
                 Gender.MALE
         );
         underTest.save(customer);
@@ -56,7 +59,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
         Customer customer = new Customer(
                 FAKER.name().fullName(),
                 FAKER.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
-                20,
+                "password", 20,
                 Gender.MALE
         );
         underTest.save(customer);

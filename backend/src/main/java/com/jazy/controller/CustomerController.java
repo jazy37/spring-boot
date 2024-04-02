@@ -2,7 +2,11 @@ package com.jazy.controller;
 
 import com.jazy.customer.Customer;
 import com.jazy.customer.CustomerRequest;
+import com.jazy.dto.CustomerDto;
+import com.jazy.jwt.JWTUtil;
 import com.jazy.service.CustomerService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,25 +17,33 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
+    private final JWTUtil jwtUtil;
+
+
+    public CustomerController(CustomerService customerService, JWTUtil jwtUtil) {
         this.customerService = customerService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping()
-    public List<Customer> getCustomers() {
+    public List<CustomerDto> getCustomers() {
         return customerService.getAllCustomer();
     }
 
     @GetMapping("/{id}")
-    public Customer getCustomer(@PathVariable(name = "id") Integer id){
+    public CustomerDto getCustomer(@PathVariable(name = "id") Integer id){
         return customerService.getCustomerById(id);
     }
 
     @PostMapping()
-    public void registerCustomer(@RequestBody CustomerRequest customer) {
-        System.out.printf("customer from body %s%n", customer);
+    public ResponseEntity<?> registerCustomer(@RequestBody CustomerRequest customer) {
         customerService.addCustomer(customer);
+        String jwtToken = jwtUtil.issueToken(customer.email(), "ROLE_USER");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .build();
     }
+
     @DeleteMapping("/{id}")
     public void deleteCustomer(@PathVariable(name = "id") Integer id) {
         customerService.deleteCustomer(id);

@@ -19,19 +19,26 @@ public class CustomerJDBCDataAccessService implements CustomerDao{
 
     @Override
     public List<Customer> selectAllCustomers() {
-        var sql = "SELECT id, name, email, age, gender FROM customer";
+        var sql = "SELECT id, name, email, password, age, gender FROM customer";
         return jdbcTemplate.query(sql, customerRowMapper);
     }
     @Override
     public Optional<Customer> findCustomerById(long id) {
-        var sql = "SELECT id, name, email, age, gender FROM customer WHERE id = ?";
+        var sql = "SELECT id, name, email, password, age, gender FROM customer WHERE id = ?";
         return jdbcTemplate.query(sql, customerRowMapper, id).stream().findFirst();
     }
 
     @Override
     public void saveCustomer(Customer customer) {
-        var sql = "INSERT INTO customer(name, email, age, gender) VALUES (?, ?, ?, ?)";
-        int results = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getAge(), String.valueOf(customer.getGender()));
+        var sql = "INSERT INTO customer(name, email, password, age, gender) VALUES (?, ?, ?, ?, ?)";
+        int results = jdbcTemplate.update(
+                sql,
+                customer.getName(),
+                customer.getEmail(),
+                customer.getPassword(),
+                customer.getAge(),
+                String.valueOf(customer.getGender()));
+        System.out.println("JDBC Insert Customer results: " + results);
     }
 
     @Override
@@ -52,6 +59,12 @@ public class CustomerJDBCDataAccessService implements CustomerDao{
     public void deleteCustomer(long id) {
         String sql = "DELETE FROM customer WHERE id = ?";
         jdbcTemplate.update(sql, id);
+    }
+
+    @Override
+    public Optional<Customer> selectUserByEmail(String email) {
+        String sql = "SELECT FROM customer WHERE email = ?";
+        return jdbcTemplate.query(sql, customerRowMapper, email).stream().findFirst();
     }
 
     @Override
