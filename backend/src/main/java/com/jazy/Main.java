@@ -24,6 +24,7 @@ public class Main {
 
         //        printBean(applicationContext);
     }
+
     @Bean
     CommandLineRunner runner(CustomerRepository repository, PasswordEncoder passwordEncoder) {
         Faker faker = new Faker(new Locale("pl"));

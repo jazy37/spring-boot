@@ -11,6 +11,9 @@ CREATE TABLE roles (
        id BIGSERIAL PRIMARY KEY,
        name TEXT NOT NULL
 );
+INSERT INTO roles(id, name) VALUES (1, 'ROLE_USER');
+INSERT INTO roles(id, name) VALUES (2, 'ROLE_MODERATOR');
+INSERT INTO roles(id, name) VALUES (3, 'ROLE_ADMIN');
 
 CREATE TABLE customer_roles (
         customer_id BIGSERIAL,
