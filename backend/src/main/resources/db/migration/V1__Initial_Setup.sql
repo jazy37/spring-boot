@@ -8,13 +8,13 @@ CREATE TABLE customer(
 );
 
 CREATE TABLE roles (
-       id INT PRIMARY KEY,
+       id BIGSERIAL PRIMARY KEY,
        name TEXT NOT NULL
 );
 
 CREATE TABLE customer_roles (
         customer_id BIGSERIAL,
-        role_id INT,
+        role_id BIGSERIAL,
         FOREIGN KEY (customer_id) REFERENCES customer(id),
         FOREIGN KEY (role_id) REFERENCES roles(id),
         PRIMARY KEY (customer_id, role_id)
