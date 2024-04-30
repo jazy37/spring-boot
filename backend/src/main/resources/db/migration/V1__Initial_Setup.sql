@@ -9,7 +9,7 @@ CREATE TABLE customer(
 
 CREATE TABLE roles (
        id INT PRIMARY KEY,
-       name VARCHAR(255) NOT NULL
+       name TEXT NOT NULL
 );
 
 CREATE TABLE customer_roles (

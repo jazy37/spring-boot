@@ -6,16 +6,15 @@ import jakarta.persistence.*;
 @Table(name = "roles")
 @Entity
 public class Role {
-
     @Id
     @SequenceGenerator(
-            name = "role_id_sequence",
+            name = "role_id_seq",
             sequenceName = "role_id_seq",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "role_id_sequence"
+            generator = "role_id_seq"
     )
     private Integer id;
 
