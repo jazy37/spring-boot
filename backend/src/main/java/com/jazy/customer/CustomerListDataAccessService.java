@@ -1,15 +1,19 @@
 package com.jazy.customer;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-@Repository("list")
+//@Repository("list")
 public class CustomerListDataAccessService implements CustomerDao{
 
     private static final List<Customer> customers;
+
+
 
     static {
         customers = new ArrayList<>();

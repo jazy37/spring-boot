@@ -11,7 +11,7 @@ import {
     Stack,
     useColorModeValue, Tag,
 } from '@chakra-ui/react'
-import DeleteCustomerAlert from "./Alerts/DeleteCustomerAlert.jsx";
+import DeleteCustomerAlert from "../Alerts/DeleteCustomerAlert.jsx";
 import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
 
 export default function CardWithImage({id, name, email, age, gender, imageNumber, fetchCustomers}) {

@@ -2,8 +2,8 @@ import SidebarWithHeader from "./components/shared/SideBar.jsx";
 import {Spinner, Text, Card, Wrap, WrapItem, Center} from "@chakra-ui/react";
 import {useEffect, useState} from "react";
 import {getCustomers, deleteCustomer} from "./services/client.js";
-import CardWithImage from "./components/Card.jsx";
-import DrawerForm from "./components/CreateCustomerDrawer.jsx";
+import CardWithImage from "./components/customer/Card.jsx";
+import DrawerForm from "./components/customer/CreateCustomerDrawer.jsx";
 import {errorNotification} from "./services/notification.js";
 
 
@@ -14,8 +14,10 @@ function App() {
     const [error, serError] = useState("")
 
     function fetchCustomers() {
+        setLoading(true);
         getCustomers()
             .then(res => {
+                console.log()
                 setCustomers(res.data)
             }).catch(err => {
                 serError(err.response.data.message)
@@ -24,7 +26,7 @@ function App() {
     }
 
     useEffect(() => {
-        setLoading(true);
+
         fetchCustomers();
     }, []);
 

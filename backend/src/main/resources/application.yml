@@ -4,7 +4,7 @@ server:
     include-message: always
 
 cors:
-  allowed-origins: "*"
+  allowed-origins: "http://localhost:5173"
   allowed-methods: "*"
   allowed-headers: "*"
   expose-headers: "*"
@@ -22,3 +22,5 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: false
+jwt:
+  cookieExpiry: 1800

@@ -1,18 +1,19 @@
 package com.jazy.service;
 
-import com.jazy.customer.Customer;
-import com.jazy.customer.CustomerDao;
-import com.jazy.customer.CustomerRequest;
+import com.jazy.customer.*;
 import com.jazy.dto.CustomerDTOMapper;
 import com.jazy.dto.CustomerDto;
 import com.jazy.exception.CustomerDuplicateException;
 import com.jazy.exception.CustomerNotFoundException;
+import com.jazy.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,13 +22,16 @@ public class CustomerService {
     private final CustomerDao customerDao;
     private final PasswordEncoder passwordEncoder;
     private final CustomerDTOMapper customerDTOMapper;
+    private final RoleRepository roleRepository;
 
     public CustomerService(@Qualifier("jpa") CustomerDao customerDao,
                            PasswordEncoder passwordEncoder,
-                           CustomerDTOMapper customerDTOMapper) {
+                           CustomerDTOMapper customerDTOMapper,
+                           RoleRepository roleRepository) {
         this.customerDao = customerDao;
         this.passwordEncoder = passwordEncoder;
         this.customerDTOMapper = customerDTOMapper;
+        this.roleRepository = roleRepository;
     }
 
     public List<CustomerDto> getAllCustomer() {
@@ -48,6 +52,9 @@ public class CustomerService {
         if(customerDao.existsPersonWithEmail(email)) {
             throw new CustomerDuplicateException("Customer with email %s already exists".formatted(email));
         }
+        Set<Role> roles = new HashSet<>();
+        Role role = roleRepository.findByName(ERole.ROLE_USER);
+        roles.add(role);
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
@@ -55,6 +62,7 @@ public class CustomerService {
                 customerRegistrationRequest.age(),
                 customerRegistrationRequest.gender()
         );
+        customer.setRoles(roles);
         customerDao.saveCustomer(customer);
     }
 

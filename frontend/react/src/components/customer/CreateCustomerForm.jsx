@@ -1,16 +1,38 @@
-import { Formik, Form } from 'formik';
+import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
-import { Button, Stack} from "@chakra-ui/react";
-import {updateCustomer} from "../services/client.js";
-import {errorNotification, successNotification} from "../services/notification.js";
-import {MyTextInput} from "./shared/MyTextInput.jsx";
+import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack, useToast} from "@chakra-ui/react";
+import {saveCustomer} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
+import {MyTextInput} from "../shared/MyTextInput.jsx";
+
+
+const MySelect = ({ label, ...props }) => {
+    const [field, meta] = useField(props);
+    return (
+        <Box>
+            <FormLabel htmlFor={props.id || props.name}>{label}</FormLabel>
+            <Select {...field} {...props} />
+            {meta.touched && meta.error ? (
+                <Alert className="error" status={"error"} mt={2} variant={"left-accent"}>
+                    <AlertIcon />
+                    {meta.error}
+                </Alert>
+            ) : null}
+        </Box>
+    );
+};
 
 // And now we can use these
-const UpdateCustomerForm = ({fetchCustomers, onClose, id, initialValues}) => {
+const CreateCustomerForm = ({fetchCustomers, onClose}) => {
     return (
         <>
             <Formik
-                initialValues={initialValues}
+                initialValues={{
+                    name: '',
+                    email: '',
+                    age: 0,
+                    gender: '',
+                }}
                 validationSchema={Yup.object({
                     name: Yup.string()
                         .max(15, 'Must be 15 characters or less')
@@ -22,13 +44,19 @@ const UpdateCustomerForm = ({fetchCustomers, onClose, id, initialValues}) => {
                         .min(16, "Must be at least 16 years of age")
                         .max(100, 'Must be less than 100 years of age')
                         .required('Required'),
+                    gender: Yup.string()
+                        .oneOf(
+                            ['MALE', 'FEMALE'],
+                            'Invalid Job Type'
+                        )
+                        .required('Required'),
                 })}
                 onSubmit={(customer, { setSubmitting }) => {
                     setSubmitting(true)
-                    updateCustomer(id, customer)
+                    saveCustomer(customer)
                         .then((res) => {
-                            if(res.status===200) {
-                                successNotification("Customer updated", `${customer.name} updated successfully`)
+                            if (res.status === 200) {
+                                successNotification("Customer Added", `${customer.name} added successfully`)
                                 fetchCustomers();
                                 onClose()
                             }
@@ -41,7 +69,7 @@ const UpdateCustomerForm = ({fetchCustomers, onClose, id, initialValues}) => {
                         })
                 }}
             >
-                {({ isValid, isSubmitting, dirty}) => (
+                {({ isValid, isSubmitting}) => (
                     <Form>
                         <Stack spacing ={"24px"}>
                             <MyTextInput
@@ -64,8 +92,14 @@ const UpdateCustomerForm = ({fetchCustomers, onClose, id, initialValues}) => {
                                 type="number"
                             />
 
+                            <MySelect label="Gender" name="gender">
+                                <option value="">Select a gender</option>
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                            </MySelect>
+
                             <Button
-                                isDisabled={ !(isValid && dirty) || isSubmitting}
+                                isDisabled={!isValid || isSubmitting}
                                 type="submit"
                             >
                                 Submit
@@ -78,4 +112,4 @@ const UpdateCustomerForm = ({fetchCustomers, onClose, id, initialValues}) => {
     );
 }
 
-export default UpdateCustomerForm;
+export default CreateCustomerForm;

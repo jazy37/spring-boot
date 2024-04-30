@@ -2,7 +2,9 @@ package com.jazy;
 
 import com.github.javafaker.Faker;
 import com.jazy.customer.Customer;
+import com.jazy.customer.ERole;
 import com.jazy.customer.Gender;
+import com.jazy.customer.Role;
 import com.jazy.repository.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,10 +13,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @SpringBootApplication
 
@@ -29,11 +28,15 @@ public class Main {
     CommandLineRunner runner(CustomerRepository repository, PasswordEncoder passwordEncoder) {
         Faker faker = new Faker(new Locale("pl"));
         Random randomAge = new Random();
+        Set<Role> roles = new HashSet<>();
+        roles.add(new Role(ERole.ROLE_USER));
         return args -> {
             String name = faker.name().firstName();
             List<Customer> customers = List.of(
-                new Customer(name, "%s@example.com".formatted(name), passwordEncoder.encode(UUID.randomUUID().toString()) , randomAge.nextInt(10,99), Gender.MALE)
-            );
+                new Customer(name, "%s@example.com".formatted(name),
+                        passwordEncoder.encode(UUID.randomUUID().toString()),
+                        randomAge.nextInt(10,99),
+                        Gender.MALE));
 //            repository.saveAll(customers);
         };
     }

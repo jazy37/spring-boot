@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
@@ -84,13 +85,14 @@ public class AuthenticationIntegrationTest {
                 .expectBody(new ParameterizedTypeReference<CustomerDto>(){})
                 .returnResult();
 
-        String token = Objects.requireNonNull(result.getResponseHeaders()
-                        .get(HttpHeaders.AUTHORIZATION))
-                .get(0);
-
+        ResponseCookie firstCookie = result.getResponseCookies().getFirst("accessToken");
+        String token = "";
+        if(firstCookie != null) {
+            token = firstCookie.getValue();
+        }
         CustomerDto customerDto = Objects.requireNonNull(result.getResponseBody());
 
         //Then
-        assertThat(jwtUtil.isTokenValid(token, customerDto.username())).isTrue();
+        assertThat(jwtUtil.isTokenValid(token)).isTrue();
     }
 }

@@ -6,6 +6,7 @@ import com.jazy.dto.CustomerDto;
 import com.jazy.jwt.JWTUtil;
 import com.jazy.service.CustomerService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,8 +40,14 @@ public class CustomerController {
     public ResponseEntity<?> registerCustomer(@RequestBody CustomerRequest customer) {
         customerService.addCustomer(customer);
         String jwtToken = jwtUtil.issueToken(customer.email(), "ROLE_USER");
+        ResponseCookie cookie = ResponseCookie.from("accessToken", jwtToken)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(1800)
+                .build();
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .build();
     }
 

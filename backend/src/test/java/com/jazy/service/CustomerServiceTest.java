@@ -8,6 +8,7 @@ import com.jazy.dto.CustomerDTOMapper;
 import com.jazy.dto.CustomerDto;
 import com.jazy.exception.CustomerDuplicateException;
 import com.jazy.exception.CustomerNotFoundException;
+import com.jazy.repository.RoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,11 +34,14 @@ class CustomerServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private RoleRepository roleRepository;
+
     private final CustomerDTOMapper customerDTOMapper = new CustomerDTOMapper();
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDao, passwordEncoder, customerDTOMapper);
+        underTest = new CustomerService(customerDao, passwordEncoder, customerDTOMapper, roleRepository);
     }
 
     @Test

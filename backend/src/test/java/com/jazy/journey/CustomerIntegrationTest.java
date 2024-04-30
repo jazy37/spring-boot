@@ -63,15 +63,15 @@ public class CustomerIntegrationTest {
                         .expectStatus()
                         .isOk()
                         .returnResult(Void.class)
-                        .getResponseHeaders()
-                        .get(AUTHORIZATION))
-                .get(0);
+                        .getResponseCookies()
+                        .getFirst("accessToken"))
+                .getValue();
 
         //get all customers
         List<CustomerDto> allCustomers = webClient.get()
                 .uri(CUSTOMER_URI)
                 .accept(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
+                .cookie("accessToken", jwtToken)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -98,7 +98,7 @@ public class CustomerIntegrationTest {
         webClient.get()
                 .uri(CUSTOMER_URI + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
+                .cookie("accessToken", jwtToken)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -134,21 +134,21 @@ public class CustomerIntegrationTest {
         //send post request for customer 2
         String jwtToken = Objects.requireNonNull(webClient.post().uri(CUSTOMER_URI)
                         .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .body(Mono.just(request1), CustomerRequest.class)
-                                .exchange()
-                                .expectStatus()
-                                .isOk()
-                                .returnResult(Void.class)
-                                .getResponseHeaders()
-                                .get(AUTHORIZATION))
-                .get(0);
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(Mono.just(request1), CustomerRequest.class)
+                        .exchange()
+                        .expectStatus()
+                        .isOk()
+                        .returnResult(Void.class)
+                        .getResponseCookies()
+                        .getFirst("accessToken"))
+                .getValue();
 
         //get all customers
         List<CustomerDto> allCustomers = webClient.get()
                 .uri(CUSTOMER_URI)
                 .accept(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION ,String.format("Bearer %s", jwtToken))
+                .cookie("accessToken", jwtToken)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -172,7 +172,7 @@ public class CustomerIntegrationTest {
         webClient.delete()
                 .uri(CUSTOMER_URI + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION ,String.format("Bearer %s", jwtToken))
+                .cookie("accessToken", jwtToken)
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -181,7 +181,7 @@ public class CustomerIntegrationTest {
         webClient.get()
                 .uri(CUSTOMER_URI + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
+                .cookie("accessToken", jwtToken)
                 .exchange()
                 .expectStatus()
                 .isNotFound();
@@ -207,15 +207,15 @@ public class CustomerIntegrationTest {
                         .expectStatus()
                         .isOk()
                         .returnResult(Void.class)
-                        .getResponseHeaders()
-                        .get(AUTHORIZATION))
-                .get(0);
+                        .getResponseCookies()
+                        .getFirst("accessToken"))
+                .getValue();
 
         //get all customers
         List<CustomerDto> allCustomers = webClient.get()
                 .uri(CUSTOMER_URI)
                 .accept(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
+                .cookie("accessToken", jwtToken)
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -243,7 +243,7 @@ public class CustomerIntegrationTest {
         webClient.put()
                 .uri(CUSTOMER_URI + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
+                .cookie("accessToken", jwtToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(requestToUpdate), CustomerRequest.class)
                 .exchange()
@@ -254,7 +254,7 @@ public class CustomerIntegrationTest {
         CustomerDto updated = webClient.get()
                 .uri(CUSTOMER_URI + "/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION, String.format("Bearer %s", jwtToken))
+                .cookie("accessToken", jwtToken)
                 .exchange()
                 .expectStatus()
                 .isOk()

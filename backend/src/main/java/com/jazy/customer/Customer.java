@@ -5,9 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Entity
 @Table(
         name = "customer",
@@ -29,18 +29,28 @@ public class Customer implements UserDetails {
             generator = "customer_id_sequence"
     )
     private Long id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String email;
+
     @Column(nullable = false)
     private Integer age;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column(nullable = false)
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "customer_roles",
+        joinColumns = @JoinColumn(name = "customer_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     public Customer() {}
 
@@ -53,7 +63,12 @@ public class Customer implements UserDetails {
         this.gender = gender;
     }
 
-    public Customer(String name, String email, String password, Integer age, Gender gender) {
+    public Customer(String name,
+                    String email,
+                    String password,
+                    Integer age,
+                    Gender gender
+                    ) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -103,7 +118,16 @@ public class Customer implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .collect(Collectors.toList());
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -136,17 +160,26 @@ public class Customer implements UserDetails {
         return true;
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Customer customer = (Customer) o;
+//        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age) && gender == customer.gender;
+//    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age) && gender == customer.gender;
+        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age) && gender == customer.gender && Objects.equals(password, customer.password) && Objects.equals(roles, customer.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, age, gender);
+        return Objects.hash(id, name, email, age, gender, roles);
     }
 
     @Override
@@ -157,6 +190,7 @@ public class Customer implements UserDetails {
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 ", gender=" + gender +
+                ", roles=" + roles +
                 '}';
     }
 
